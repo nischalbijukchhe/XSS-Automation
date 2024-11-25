@@ -47,7 +47,10 @@ Before use, remember to replace the Blind XSS payload with your own in the `xss_
 - `dalfox`
 - `uro`
 - `gf`
-
+- Gxss
+- Kxss
+- urlfinder
+- waymore
 
 ## Usage
 
