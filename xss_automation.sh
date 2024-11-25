@@ -11,7 +11,7 @@ echo " ██████████   █████ █████      ░
 echo "░░░░░░░░░░   ░░░░░ ░░░░░        ░░░░░    ░░░░░███    ░░░░░░   ░░░░░ ░░░░░░░░░░       ░░░░░     ░░░░░ ░░░░░  ░░░░░░░░░   ░░░░░░░░░ "
 echo "                                         ███ ░███                                                                                 "
 echo "                                        ░░██████                                                                                  "
-echo "                                         ░░░░░░                                                                                   "
+echo "    updated by NEPAX LEGEND added urlfinder and waymore                                     ░░░░░░                                                                                   "
 
 # Function to check if a command exists
 function command_exists {
@@ -147,42 +147,54 @@ if [ ! -f results/$domain/katana.txt ] || [ "$rerun_steps" = true ]; then
     katana -list results/$domain/activesubs.txt -f url -d 10 -o results/$domain/katana.txt
     rerun_steps=true
 fi
-
-# Step 9: Merge results and remove duplicates if paths.txt is missing
-if [ ! -f results/$domain/paths.txt ] || [ "$rerun_steps" = true ]; then
-    echo -e "\033[1;33mGenerating paths.txt...\033[0m"
-    cat results/$domain/wayback.txt results/$domain/gau.txt results/$domain/katana.txt results/$domain/gospider.txt results/$domain/hakrawler.txt | anew results/$domain/paths.txt
+# Step 9: Run waymore added by nepax
+if [ ! -f results/$domain/waymore.txt ] || [ "$rerun_steps" = true ]; then
+    echo -e "\033[1;33mGenerating waymore.txt...\033[0m"
+    waymore -i $domain -mode U -v -nlf -fc 404 -oU results/$domain/waymore.txt
+    rerun_steps=true
+fi
+# Step 10: Run urlfinder added by nepax
+if [ ! -f results/$domain/urlfinder.txt ] || [ "$rerun_steps" = true ]; then
+    echo -e "\033[1;33mGenerating urlfinder.txt...\033[0m"
+    urlfinder -d  $domain -o results/$domain/urlfinder.txt
     rerun_steps=true
 fi
 
-# Step 10: Normalize and deduplicate URLs using uro if uro1.txt is missing
+# Step 11: Merge results and remove duplicates if paths.txt is missing
+if [ ! -f results/$domain/paths.txt ] || [ "$rerun_steps" = true ]; then
+    echo -e "\033[1;33mGenerating paths.txt...\033[0m"
+    cat results/$domain/wayback.txt results/$domain/gau.txt results/$domain/katana.txt results/$domain/gospider.txt results/$domain/hakrawler.txt results/$domain/waymore.txt results/$domain/urlfinder.txt | anew results/$domain/paths.txt
+    rerun_steps=true
+fi
+
+# Step 12: Normalize and deduplicate URLs using uro if uro1.txt is missing
 if [ ! -f results/$domain/uro1.txt ] || [ "$rerun_steps" = true ]; then
     echo -e "\033[1;33mGenerating uro1.txt...\033[0m"
     cat results/$domain/paths.txt | uro -o results/$domain/uro1.txt
     rerun_steps=true
 fi
 
-# Step 11: Check live endpoints using httpx if live_uro1.txt is missing
+# Step 13: Check live endpoints using httpx if live_uro1.txt is missing
 if [ ! -f results/$domain/live_uro1.txt ] || [ "$rerun_steps" = true ]; then
     echo -e "\033[1;33mGenerating live_uro1.txt...\033[0m"
     httpx -l results/$domain/uro1.txt -o results/$domain/live_uro1.txt -threads 200 -silent -follow-redirects
     rerun_steps=true
 fi
 
-# Step 12: Use gf xss and generate xss_ready.txt if missing
+# Step 14: Use gf xss and generate xss_ready.txt if missing
 if [ ! -f results/$domain/xss_ready.txt ] || [ "$rerun_steps" = true ]; then
     echo -e "\033[1;33mGenerating xss_ready.txt...\033[0m"
     cat results/$domain/live_uro1.txt | gf xss | tee results/$domain/xss_ready.txt
     rerun_steps=true
 fi
 
-# Step 13: Run dalfox on xss_ready.txt if Vulnerable_XSS.txt is missing
+# Step 15: Run dalfox on xss_ready.txt if Vulnerable_XSS.txt is missing
 if [ ! -f results/$domain/Vulnerable_XSS.txt ] || [ "$rerun_steps" = true ]; then
     echo -e "\033[1;33mRunning dalfox to generate Vulnerable_XSS.txt...\033[0m"
     if [ "$provide_custom_payload" == "y" ]; then
-        dalfox file results/$domain/xss_ready.txt -b https://blindf.com/bx.php --custom-payload $custom_payload_path -o results/$domain/Vulnerable_XSS.txt
+        dalfox file results/$domain/xss_ready.txt -b https://xss0r.com/c/nepax --custom-payload $custom_payload_path -o results/$domain/Vulnerable_XSS.txt
     else
-        dalfox file results/$domain/xss_ready.txt -b https://blindf.com/bx.php -o results/$domain/Vulnerable_XSS.txt
+        dalfox file results/$domain/xss_ready.txt -b https://xss0r.com/c/nepax -o results/$domain/Vulnerable_XSS.txt
     fi
 fi
 
