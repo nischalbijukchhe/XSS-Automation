@@ -184,7 +184,7 @@ fi
 # Step 14: Use gf xss and generate xss_ready.txt if missing
 if [ ! -f results/$domain/xss_ready.txt ] || [ "$rerun_steps" = true ]; then
     echo -e "\033[1;33mGenerating xss_ready.txt...\033[0m"
-    cat results/$domain/live_uro1.txt | gf xss | tee results/$domain/xss_ready.txt
+    cat results/$domain/live_uro1.txt | Gxss | kxss | grep -oP '^URL: \K\S+' | sed 's/=.*/=/'| tee results/$domain/xss_ready.txt
     rerun_steps=true
 fi
 
