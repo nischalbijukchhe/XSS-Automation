@@ -137,14 +137,14 @@ fi
 # Step 7: Run hakrawler if file is missing
 if [ ! -f results/$domain/hakrawler.txt ] || [ "$rerun_steps" = true ]; then
     echo -e "\033[1;33mGenerating hakrawler.txt...\033[0m"
-    cat results/$domain/activesubs.txt | hakrawler -d 10 | grep "$domain" | grep "=" | egrep -iv ".(jpg|jpeg|gif|css|tif|tiff|png|ttf|woff|woff2|ico|pdf|svg|txt|js)" | anew results/$domain/hakrawler.txt
+    cat results/$domain/activesubs.txt | hakrawler -d 5 | grep "$domain" | grep "=" | egrep -iv ".(jpg|jpeg|gif|css|tif|tiff|png|ttf|woff|woff2|ico|pdf|svg|txt|js)" | anew results/$domain/hakrawler.txt
     rerun_steps=true
 fi
 
 # Step 8: Run katana if file is missing
 if [ ! -f results/$domain/katana.txt ] || [ "$rerun_steps" = true ]; then
     echo -e "\033[1;33mGenerating katana.txt...\033[0m"
-    katana -list results/$domain/activesubs.txt -f url -d 10 -o results/$domain/katana.txt
+    katana -list results/$domain/activesubs.txt -f url -d 5 -o results/$domain/katana.txt
     rerun_steps=true
 fi
 # Step 9: Run waymore added by nepax
