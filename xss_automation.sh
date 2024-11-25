@@ -149,14 +149,14 @@ if [ ! -f results/$domain/katana.txt ] || [ "$rerun_steps" = true ]; then
 fi
 # Step 9: Run waymore added by nepax
 if [ ! -f results/$domain/waymore.txt ] || [ "$rerun_steps" = true ]; then
-    echo -e "\033[1;33mGenerating waymore.txt...\033[0m"
+    echo -e "\033[1;33mGenerating waymore.txt added by nepax...\033[0m"
     waymore -i $domain -mode U -v -nlf -fc 404 -oU results/$domain/waymore.txt
     rerun_steps=true
 fi
 # Step 10: Run urlfinder added by nepax
 if [ ! -f results/$domain/urlfinder.txt ] || [ "$rerun_steps" = true ]; then
-    echo -e "\033[1;33mGenerating urlfinder.txt...\033[0m"
-    urlfinder -d  $domain -o results/$domain/urlfinder.txt
+    echo -e "\033[1;33mGenerating urlfinder.txt added by nepax...\033[0m"
+    urlfinder -d  results/$domain/activesubs.txt -o results/$domain/urlfinder.txt
     rerun_steps=true
 fi
 
