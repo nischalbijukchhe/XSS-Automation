@@ -123,7 +123,7 @@ fi
 # Step 5: Run httpx if file is missing
 if [ ! -f results/$domain/activesubs.txt ] || [ "$rerun_steps" = true ]; then
     echo -e "\033[1;33mGenerating activesubs.txt...\033[0m"
-    httpx -l results/$domain/subdomains.txt -o results/$domain/activesubs.txt -threads 200 -silent -follow-redirects
+    httpx -l results/$domain/subdomains.txt -o results/$domain/activesubs.txt -threads 200 -silent 
     rerun_steps=true
 fi
 
